@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -27,8 +29,6 @@ import com.google.mlkit.vision.face.Face
 class MainActivity : AppCompatActivity() {
 
     private val tag = "MainActivity"
-    private val face1Tab = 0
-    private val face2Tab = 1
     private val pickImage = 100
     private var selectedTab = 0
 
@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var button: FloatingActionButton
+    private lateinit var tabLayout: TabLayout
 
     private lateinit var faces1: List<Face>
     private lateinit var faces2: List<Face>
@@ -55,6 +56,22 @@ class MainActivity : AppCompatActivity() {
     private var okToSwap = false
     private var hasSwapped = false
 
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            button.isEnabled = false
+
+            if (selectedTab == 0) {
+                imageUriFace1 = uri
+                imageView.setImageURI(imageUriFace1)
+                imageUriFace1?.let { prepareImage(it, 0) }
+            }
+            if (selectedTab == 1) {
+                imageUriFace2 = uri
+                imageView.setImageURI(imageUriFace2)
+                imageUriFace2?.let { prepareImage(it, 1) }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,31 +81,29 @@ class MainActivity : AppCompatActivity() {
         button = findViewById(R.id.fab)
         button.isEnabled = false
         imageView = findViewById(R.id.imageView)
+        tabLayout = tabs
 
         // Change tabs
-
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
                 if (tab != null) {
                     Log.d(tag, "Tab ${tab.position} selected")
-
                     selectedTab = tab.position
 
                     if (hasSwapped) {
                         // Swapped, used swapped bitmaps instead of source.
-                        if (tab.position == face1Tab) {
+                        if (tab.position == 0) {
                             imageView.setImageBitmap(bitmap1Swapped)
                         }
-                        if (tab.position == face2Tab) {
+                        if (tab.position == 1) {
                             imageView.setImageBitmap(bitmap2Swapped)
                         }
                     } else {
                         // Has not swapped, use sources.
-                        if (tab.position == face1Tab) {
+                        if (tab.position == 0) {
                             imageView.setImageURI(imageUriFace1)
                         }
-                        if (tab.position == face2Tab) {
+                        if (tab.position == 1) {
                             imageView.setImageURI(imageUriFace2)
                         }
                     }
@@ -108,9 +123,7 @@ class MainActivity : AppCompatActivity() {
 
         imageView.setOnClickListener {
             Log.d(tag, "Click on image view.")
-            val gallery =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
+            pickImageLauncher.launch("image/*")
         }
 
         // Click listener for action button, should result in face swap.
@@ -130,39 +143,17 @@ class MainActivity : AppCompatActivity() {
                     Swap.faceSwapAll(bitmap2, bitmap1, landmarksForFaces2, landmarksForFaces1)
 
 
-                if (selectedTab == face1Tab) {
+                if (selectedTab == 0) {
                     imageView.setImageBitmap(bitmap1Swapped)
                 }
 
-                if (selectedTab == face2Tab) {
+                if (selectedTab == 1) {
                     imageView.setImageBitmap(bitmap2Swapped)
                 }
 
                 hasSwapped = true
 
                 // imageUriFace1?.let { it1 -> drawLandmarks(it1, landmarksForFaces1) }
-            }
-        }
-    }
-
-    // Gallery
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d(tag, "onActivityResult: Image selected.")
-
-        if (resultCode == RESULT_OK && requestCode == pickImage) {
-
-            button.isEnabled = false
-
-            if (selectedTab == face1Tab) {
-                imageUriFace1 = data?.data
-                imageView.setImageURI(imageUriFace1)
-                imageUriFace1?.let { prepareImage(it, 0) }
-            }
-            if (selectedTab == face2Tab) {
-                imageUriFace2 = data?.data
-                imageView.setImageURI(imageUriFace2)
-                imageUriFace2?.let { prepareImage(it, 1) }
             }
         }
     }

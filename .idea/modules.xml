@@ -4,7 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FaceSwap.iml" filepath="$PROJECT_DIR$/.idea/modules/FaceSwap.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FaceSwap.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.main.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary3412/FaceSwap.openCVLibrary3412.unitTest.iml" />
     </modules>
   </component>
 </project>
